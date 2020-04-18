@@ -43,8 +43,36 @@ m.Me = "Agam"
 println m.get("Me")*/
 
 
-def echoIt = {
+def echoIt = {a->
 	println "Hiiiiii"
+	println a
 }
 
-println echoIt()
+ echoIt(1)
+ 
+ 
+ 
+ class Person2 {                       
+
+    String theName                      
+    Integer theAge
+    
+   
+     Person2(theName, theAge) {          
+        this.theName = theName
+        this.theAge = theAge
+    }
+
+
+	def executeInside(Closure c){
+		c.delegate = this
+		c()
+	}
+
+}
+
+def p2 = new Person2("Fred", 35)
+println p2.theName
+
+p2.executeInside {println theName}
+ 
