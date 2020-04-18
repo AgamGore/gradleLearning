@@ -1,0 +1,50 @@
+/*defaultTasks 'hello'
+
+task ('hello').doLast{
+	println "HELLO WORLD"
+}*/
+
+/*import java.text.*
+
+SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+sdf.setTimeZone(TimeZone.getTimeZone("UTC"))
+ 
+
+println "Hello World now: " + sdf.format(new Date())
+
+
+//System.out.println "Hellos World"
+sayHelloWorld()
+
+void sayHelloWorld(){
+	println  "Hello Meethus"
+}
+
+
+def s3 = """ 
+ A
+	string agam
+	on
+	multiple
+	lines
+"""
+
+println s3
+
+
+Map m = new HashMap()
+
+m.put("Me","Meethu")
+
+println m.get("Me")
+
+m.Me = "Agam"
+
+println m.get("Me")*/
+
+
+def echoIt = {
+	println "Hiiiiii"
+}
+
+println echoIt()
