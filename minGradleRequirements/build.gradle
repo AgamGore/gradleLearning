@@ -1,61 +1,117 @@
-defaultTasks  'hi','hello'
+/*defaultTasks 'doFinished'
 
-//println ">>> build.gradle --> This is executed during the configuration phase  - timestamp @ ${gradle.timestamp()}"
+println ">>> build.gradle --> This is executed during the configuration phase  - timestamp @ ${gradle.timestamp()}"
 
 
-task hi
 
-project.hi.doLast {
-	println "Hi"
+task doStartProcess {
+	doLast{
+		println "$name - Now starting the process - OK!"
+	}
 }
 
-task hello {
-			description = "Log the name of the Task"
-			group = "Welcome" 
-			
-			doFirst{
-				println "My name is: $name and this is my 1st defined Action"
-			}
-			
-			doLast{
-				println "My name is: $name and this is my 2nd defined Action"
-			}
+task doStep2{
+	doLast{
+		println "$name - Performed OK!"
+	}
 }
 
-println hello.description
-println hello.group
-
-
-
-hello.doLast{
-	println "My name is: $name and this is my 4th defined Action"
-}
-
-hello.doLast{
-	println "My name is: $name and this is my 3nd defined Action"
+task doSomethingInTheMiddle (dependsOn: ['doStartProcess', 'doStep2']) {
+	doLast{
+		println "$name - Performed the middle step - OK!"
+	}
 }
 
 
-hello.doFirst{
-	println "My name is: $name and this is my 5th defined Action!! but executed when?"
+task doFinished (dependsOn: ['doSomethingInTheMiddle', 'doStep2'])   {
+	doLast{
+		println "$name - Done - OK!"
+	}	
+}*/
+
+defaultTasks 'doFinished'
+
+println ">>> build.gradle --> This is executed during the configuration phase  - timestamp @ ${gradle.timestamp()}"
+
+
+
+task doStartProcess {
+	doLast{
+		println "$name - Now starting the process - OK!"
+	}
 }
 
 
-task hello2 {
-		description = "Log the name of the Task"
-		group = "Welcome" 				
+
+
+
+task doFinished (dependsOn: ['doSomethingInTheMiddle', 'doStep2'])   {
+	doLast{
+		println "$name - Done - OK!"
+	}	
+}
+
+task doSomethingInTheMiddle (dependsOn: ['doStartProcess',  tasks.findAll { task -> task.name.startsWith('doStep2')  }  ]) {
+	doLast{
+		println "$name - Performed the middle step - OK!"
+	}
 }
 
 
-hello2.doFirst{
-	println "My name is: $name and this is my 1st defined Action"
-}.doLast{
-	println "My name is: $name and this is my 2nd defined Action"
-}.doLast{
-	println "My name is: $name and this is my 4th defined Action"
-}.doLast{
-	println "My name is: $name and this is my 3nd defined Action"
-}.doFirst{
-	println "My name is: $name and this is my 5th defined Action!! but executed when?"
+
+
+task doStep2{
+	doLast{
+		println "$name - Performed OK!"
+	}
 }
 
+println ">>> ${ project.tasks.findAll { task -> task.name.startsWith('doStep2')  }  }"
+
+
+
+/*
+
+//Add to dependency to existing Task
+
+defaultTasks 'doFinished'
+
+println ">>> build.gradle --> This is executed during the configuration phase  - timestamp @ ${gradle.timestamp()}"
+
+
+task doStartProcess {
+	doLast{
+		println "$name - Now starting the process - OK!"
+	}
+}
+
+task doStep2 {
+	doLast{
+		println "$name - Performed OK!"
+	}
+}
+
+task doSomethingInTheMiddle  {
+	doLast{
+		println "$name - Performed the middle step - OK!"
+	}
+}
+
+
+task doFinished (dependsOn: 'doSomethingInTheMiddle'){
+	doLast{
+		println "$name - Done - OK!"
+	}	
+}
+
+
+println "${ project.tasks.findAll { task -> task.name.startsWith('doStep2')} }"
+
+
+//Conditional logic
+if ( Math.random() < 0.5){
+	doSomethingInTheMiddle.dependsOn doStartProcess, tasks.findAll { task -> task.name.startsWith('doStep2') }
+}
+
+
+*/
