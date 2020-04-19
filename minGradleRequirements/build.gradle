@@ -1,74 +1,61 @@
-println ">>> build.gradle --> This is executed during the configuration phase  - timestamp @ ${gradle.timestamp()}"
+defaultTasks  'hi','hello'
+
+//println ">>> build.gradle --> This is executed during the configuration phase  - timestamp @ ${gradle.timestamp()}"
 
 
-// logger.info ">>> build.gradle: $project.gradle.gradleVersion"
-// logger.info ">>> build.gradle: $project.gradle.gradleHomeDir"
-// logger.info ">>> build.gradle: $project.gradle.gradleUserHomeDir"
+task hi
 
-// logger.info ">>> build.gradle: $buildFile"
+project.hi.doLast {
+	println "Hi"
+}
 
-// logger.info ">>> build.gradle: ${relativePath(buildFile)}"
+task hello {
+			description = "Log the name of the Task"
+			group = "Welcome" 
+			
+			doFirst{
+				println "My name is: $name and this is my 1st defined Action"
+			}
+			
+			doLast{
+				println "My name is: $name and this is my 2nd defined Action"
+			}
+}
 
-
-/*
-logger.info """
-******************************************************************************
-Welcome to Gradle $gradle.gradleVersion - http://www.gradle.org
-Gradle home is set to: $gradle.gradleHomeDir
-Gradle user directory is set to: $gradle.gradleUserHomeDir
-
-Base directory: $projectDir
-Running script  ${relativePath(buildFile)}
-******************************************************************************
-"""
-*/
-
-
-
-//Properties
-
-logger.info "has property: ${project.gradle.hasProperty('$gradleVersion')}"
-
-logger.info "has property: ${hasProperty('projectDir')}"
-
-
-logger.info project.gradlePropertiesProp
-println "has property: ${project.hasProperty('gradlePropertiesProp')}"
+println hello.description
+println hello.group
 
 
 
-if( project.hasProperty('gradlePropertiesProp') ) {
-	logger.info "The property file value is $gradlePropertiesProp"
-}else{
-	logger.info "Oops! gradlePropertiesProp can't be found"
+hello.doLast{
+	println "My name is: $name and this is my 4th defined Action"
+}
+
+hello.doLast{
+	println "My name is: $name and this is my 3nd defined Action"
 }
 
 
-
-if( project.hasProperty('commandLineProjectProp') ) {
-	logger.info "The property file value is $commandLineProjectProp"
-}else{
-	logger.info "Oops! commandLineProjectProp can't be found"
+hello.doFirst{
+	println "My name is: $name and this is my 5th defined Action!! but executed when?"
 }
 
 
-project.ext.sayHello = "Hello!"
-if( project.hasProperty('sayHello') ) {
-	logger.info project.sayHello
-}else{
-	logger.info "Unable to say Hello!"
-}
-
-if( project.gradle.hasProperty('timestamp') ) {
-	logger.info project.gradle.timestamp()
-}else{
-	logger.info "Oops! timestamp() unavailable!"
+task hello2 {
+		description = "Log the name of the Task"
+		group = "Welcome" 				
 }
 
 
-if( gradle.ext.has('timestamp') ) {
-	logger.info gradle.timestamp()
-}else{
-	logger.info "Oops! timestamp() unavailable!"
+hello2.doFirst{
+	println "My name is: $name and this is my 1st defined Action"
+}.doLast{
+	println "My name is: $name and this is my 2nd defined Action"
+}.doLast{
+	println "My name is: $name and this is my 4th defined Action"
+}.doLast{
+	println "My name is: $name and this is my 3nd defined Action"
+}.doFirst{
+	println "My name is: $name and this is my 5th defined Action!! but executed when?"
 }
 
