@@ -1,78 +1,35 @@
-/*defaultTasks 'hello'
 
-task ('hello').doLast{
-	println "HELLO WORLD"
-}*/
+/*def comment =
+{"""
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+The configuration starts from build.gralde file 
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-/*import java.text.*
-
-SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
-sdf.setTimeZone(TimeZone.getTimeZone("UTC"))
- 
-
-println "Hello World now: " + sdf.format(new Date())
-
-
-//System.out.println "Hellos World"
-sayHelloWorld()
-
-void sayHelloWorld(){
-	println  "Hello Meethus"
-}
-
-
-def s3 = """ 
- A
-	string agam
-	on
-	multiple
-	lines
 """
-
-println s3
-
-
-Map m = new HashMap()
-
-m.put("Me","Meethu")
-
-println m.get("Me")
-
-m.Me = "Agam"
-
-println m.get("Me")*/
-
-
-def echoIt = {a->
-	println "Hiiiiii"
-	println a
 }
 
- echoIt(1)
- 
- 
- 
- class Person2 {                       
+println(comment())
 
-    String theName                      
-    Integer theAge
-    
-   
-     Person2(theName, theAge) {          
-        this.theName = theName
-        this.theAge = theAge
-    }
+println ">>> build.gradle --> This is executed during the configuration phase timestamp @ ${gradle.timestamp()}"
 
 
-	def executeInside(Closure c){
-		c.delegate = this
-		c()
-	}
+println ">>> another.gradle: $gradle.gradleVersion"
+println  ">>> build.gradle: $gradle.gradleHomeDir"
+println  ">>> build.gradle: $gradle.gradleUserHomeDir"
 
-}
+println ">>> build.gradle: $buildFile"
 
-def p2 = new Person2("Fred", 35)
-println p2.theName
+println ">>> build.gradle: ${relativePath(buildFile)}"
+*/
 
-p2.executeInside {println theName}
- 
+
+println """
+******************************************************************************
+Welcome to Gradle $gradle.gradleVersion - http://www.gradle.org
+Gradle home is set to: $gradle.gradleHomeDir
+Gradle user directory is set to: $gradle.gradleUserHomeDir
+
+Base directory: $projectDir
+Running script  ${relativePath(buildFile)}
+******************************************************************************
+"""
