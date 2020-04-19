@@ -1,6 +1,6 @@
 /*defaultTasks 'doFinished'
 
-println ">>> build.gradle --> This is executed during the configuration phase  - timestamp @ ${gradle.timestamp()}"
+//println ">>> build.gradle --> This is executed during the configuration phase  - timestamp @ ${gradle.timestamp()}"
 
 
 
@@ -14,41 +14,6 @@ task doStep2{
 	doLast{
 		println "$name - Performed OK!"
 	}
-}
-
-task doSomethingInTheMiddle (dependsOn: ['doStartProcess', 'doStep2']) {
-	doLast{
-		println "$name - Performed the middle step - OK!"
-	}
-}
-
-
-task doFinished (dependsOn: ['doSomethingInTheMiddle', 'doStep2'])   {
-	doLast{
-		println "$name - Done - OK!"
-	}	
-}*/
-
-defaultTasks 'doFinished'
-
-println ">>> build.gradle --> This is executed during the configuration phase  - timestamp @ ${gradle.timestamp()}"
-
-
-
-task doStartProcess {
-	doLast{
-		println "$name - Now starting the process - OK!"
-	}
-}
-
-
-
-
-
-task doFinished (dependsOn: ['doSomethingInTheMiddle', 'doStep2'])   {
-	doLast{
-		println "$name - Done - OK!"
-	}	
 }
 
 task doSomethingInTheMiddle (dependsOn: ['doStartProcess',  tasks.findAll { task -> task.name.startsWith('doStep2')  }  ]) {
@@ -58,25 +23,28 @@ task doSomethingInTheMiddle (dependsOn: ['doStartProcess',  tasks.findAll { task
 }
 
 
-
-
-task doStep2{
+task doFinished (dependsOn: ['doSomethingInTheMiddle', 'doStep2'])   {
 	doLast{
-		println "$name - Performed OK!"
-	}
+		println "$name - Done - OK!"
+	}	
 }
 
-println ">>> ${ project.tasks.findAll { task -> task.name.startsWith('doStep2')  }  }"
 
 
 
-/*
+*/
+project.gradle.taskGraph.whenReady {
+	println">>> $project.gradle.taskGraph.allTasks"
+}
 
-//Add to dependency to existing Task
+
+
+
 
 defaultTasks 'doFinished'
 
-println ">>> build.gradle --> This is executed during the configuration phase  - timestamp @ ${gradle.timestamp()}"
+//println ">>> build.gradle --> This is executed during the configuration phase  - timestamp @ ${gradle.timestamp()}"
+
 
 
 task doStartProcess {
@@ -85,33 +53,47 @@ task doStartProcess {
 	}
 }
 
-task doStep2 {
+task doStep2{
 	doLast{
 		println "$name - Performed OK!"
 	}
 }
 
-task doSomethingInTheMiddle  {
+task doSomethingInTheMiddle (dependsOn: ['doStartProcess',  tasks.findAll { task -> task.name.startsWith('doStep2')  }  ]) {
 	doLast{
 		println "$name - Performed the middle step - OK!"
 	}
 }
 
 
-task doFinished (dependsOn: 'doSomethingInTheMiddle'){
+task doFinished {
 	doLast{
-		println "$name - Done - OK!"
+		println "$name - Done - OK! >>> with version=$version"
 	}	
 }
 
 
-println "${ project.tasks.findAll { task -> task.name.startsWith('doStep2')} }"
-
 
 //Conditional logic
 if ( Math.random() < 0.5){
-	doSomethingInTheMiddle.dependsOn doStartProcess, tasks.findAll { task -> task.name.startsWith('doStep2') }
+	doFinished.dependsOn doSomethingInTheMiddle, doStep2
 }
 
+project.gradle.taskGraph.whenReady {taskGraph ->
+    if (taskGraph.hasTask(doStep2)) {    	
+        project.version = '1.0'        
+    } else {    	
+        project.version = '1.0-SNAPSHOT'
+    }
+    println ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> $project.version"
+}
 
-*/
+ project.gradle.taskGraph.beforeTask{task ->
+  	println "+++ Before task $task.name"
+ }
+ 
+ project.gradle.taskGraph.afterTask{task ->
+  	println "+++ Finished task $task.name"
+ }
+
+
